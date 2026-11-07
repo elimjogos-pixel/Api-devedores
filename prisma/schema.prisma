@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Devedor {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  cpf       String   @unique
+  email     String?
+  telefone  String?
+  dividas   Divida[]
+  criadoEm  DateTime @default(now())
+}
+
+model Divida {
+  id             Int      @id @default(autoincrement())
+  devedorId      Int
+  descricao      String
+  valor          Decimal  @db.Decimal(10, 2)
+  dataVencimento DateTime
+  status         String   @default("PENDENTE")
+  devedor        Devedor  @relation(fields: [devedorId], references: [id], onDelete: Restrict)
+  criadoEm       DateTime @default(now())
+
+  @@index([devedorId])
+}

@@ -1,0 +1,22 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+
+# Configurações locais de ferramentas
+.agents/
+.claude/
+.windsurf/
