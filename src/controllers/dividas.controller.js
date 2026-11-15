@@ -261,9 +261,35 @@ async function cadastrar(req, res) {
     }
     
  }
+ async function atualizarDividasVencidas() {
+    const dataHoje = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(new Date());
+
+    const hoje = new Date(`${dataHoje}T00:00:00.000Z`);
+
+    const resultado = await prisma.divida.updateMany({
+        where: {
+            status: 'PENDENTE',
+            dataVencimento: {
+                lt: hoje
+            }
+        },
+        data: {
+            status: 'VENCIDA'
+        }
+    });
+    return resultado.count
+    
+ }
   // Gerar relatório financeiro das dívidas
 async function gerarRelatorio(req, res) {
     try {
+        await atualizarDividasVencidas();
+
         const resultado = await prisma.divida.groupBy({
             by: ['status'],
             _count: {
@@ -321,11 +347,43 @@ async function gerarRelatorio(req, res) {
     }
 }
 
+async function listarHistorico(req, res) {
+    try {
+        const dividasPagas = await prisma.divida.findMany({
+            where: {
+                status: 'PAGA'
+            },
+            include: {
+                devedor: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        cpf: true
+                    }
+                }
+            },
+            orderBy: {
+                dataVencimento: 'asc'
+            }
+        });
+        return res.status(200).json(dividasPagas)
+        
+    }   catch(erro) {
+        console.error(erro);
+
+        return res.status(500).json({
+            erro: 'Erro ao consultar historico de dívidas pagas.'
+        });
+    }
+    
+}
+
  module.exports = {
     cadastrar,
     listar,
     consultarPorId,
     atualizarStatus,
-    gerarRelatorio
+    gerarRelatorio,
+    listarHistorico
  };
 

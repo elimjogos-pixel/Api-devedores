@@ -119,7 +119,17 @@ async function cadastrar(req, res) {
 // Listar todos os devedores
 async function listar(req, res) {
     try {
-        const devedores = await prisma.devedor.findMany();
+        const devedores = await prisma.devedor.findMany({
+            where: {
+                dividas: {
+                    some: {
+                        status: {
+                            in: ['PENDENTE', 'VENCIDA']
+                        }
+                    }
+                }
+            }
+        });
 
         return res.status(200).json(devedores);
 
@@ -490,6 +500,61 @@ async function atualizarParcial(req, res) {
     
 }
 
+async function listarDividasPorDevedor(req, res) {
+    try {
+        const id = Number(req.params.id);
+
+        //validar ID
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({
+                erro:'ID do devedor inválido'
+            });
+        }
+
+        //buscar devedor e suas dividas
+        const devedor = await prisma.devedor.findUnique({
+            where: { id },
+            include: {
+                dividas: {
+                    orderBy: {
+                        dataVencimento: 'asc'
+                    }
+                }
+            }
+        });
+        if (!devedor) {
+            return res.status(404).json({
+                erro: 'Devedor não encontrado'
+            });
+        }
+        //calcular totais
+        const quantidadeDividas = devedor.dividas.length;
+
+        const valorTotal = devedor.dividas.reduce(
+            (total,divida) => total + Number(divida.valor),
+            0
+        );
+        return res.status(200).json({
+            devedor: {
+                id: devedor.id,
+                nome: devedor.nome,
+                cpf: devedor.cpf
+
+            },
+            quantidadeDividas,
+            valorTotal,
+            dividas: devedor.dividas
+        });
+        
+    } catch(erro) {
+        console.error(erro);
+        return res.status(500).json({
+            erro: 'Erro ao consultar dívidas do devedor'
+        });
+    }
+    
+}
+
 module.exports = {
     cadastrar,
     listar,
@@ -497,5 +562,6 @@ module.exports = {
     excluir,
     obterTodos,
     atualizar,
-    atualizarParcial
+    atualizarParcial,
+    listarDividasPorDevedor
 };

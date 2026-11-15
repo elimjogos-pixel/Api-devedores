@@ -24,4 +24,7 @@ router.put('/:id', devedoresController.atualizar);
 // criar a rota de atualizar 1 item
 router.patch('/:id', devedoresController.atualizarParcial);
 
+//criar rota lista dividas por devedor
+router.get('/:id/dividas', devedoresController.listarDividasPorDevedor);
+
 module.exports = router;

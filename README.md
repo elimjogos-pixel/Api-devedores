@@ -28,8 +28,6 @@ Versionamento com Git e GitHub.
 
 Tecnologias utilizadas
 
-Tecnologia
-
 Finalidade
 
 Node.js

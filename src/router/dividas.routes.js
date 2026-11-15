@@ -14,6 +14,9 @@ router.get('/', dividasController.listar);
 //consulta relatorio
 router.get('/relatorio', dividasController.gerarRelatorio);
 
+//consulta dos pagamentos efetuados
+router.get('/historico', dividasController.listarHistorico);
+
 //consultar divida por id
 router.get('/:id', dividasController.consultarPorId);
 
