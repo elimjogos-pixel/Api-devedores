@@ -1,22 +1,26 @@
 API Devedores
 
-API REST para gerenciamento de devedores e suas respectivas dívidas, desenvolvida como projeto de estudo e evolução profissional em desenvolvimento backend.
+Sistema web para gerenciamento de devedores e suas respectivas dívidas, desenvolvido como projeto prático de estudo e evolução profissional em desenvolvimento de software.
 
-O projeto utiliza Node.js, Express, Prisma ORM e MySQL, com testes automatizados utilizando Jest e Supertest.
+O projeto possui uma API REST desenvolvida com Node.js, Express, Prisma ORM e MySQL, além de uma interface web construída com React, Vite e Bootstrap.
+
+Também conta com testes automatizados utilizando Jest e Supertest.
 
 Sobre o projeto
 
-A API permite cadastrar e consultar devedores, gerenciar seus dados e registrar dívidas vinculadas a cada devedor.
+O API Devedores permite cadastrar e gerenciar devedores, registrar dívidas, acompanhar vencimentos, atualizar pagamentos e consultar o histórico de dívidas quitadas.
 
-O objetivo do projeto é aplicar conceitos importantes do desenvolvimento backend, como:
+O objetivo é aplicar conceitos importantes do desenvolvimento de software, incluindo:
 
-Criação de APIs REST.
+Construção de APIs REST.
+
+Desenvolvimento backend e frontend.
 
 Organização de código por responsabilidades.
 
-Validação de dados recebidos.
+Validação de dados.
 
-Persistência de dados em banco relacional.
+Persistência em banco de dados relacional.
 
 Relacionamento entre entidades.
 
@@ -24,11 +28,11 @@ Tratamento de erros HTTP.
 
 Testes automatizados.
 
+Integração entre frontend e backend.
+
 Versionamento com Git e GitHub.
 
-Tecnologias utilizadas
-
-Finalidade
+Tecnologias utilizadas:
 
 Node.js
 
@@ -46,6 +50,18 @@ MySQL
 
 Banco de dados relacional
 
+React
+
+Construção da interface
+
+Vite
+
+Ferramenta de desenvolvimento frontend
+
+Bootstrap
+
+Estilização e componentes visuais
+
 Jest
 
 Testes automatizados
@@ -58,84 +74,67 @@ Nodemon
 
 Reinicialização automática durante o desenvolvimento
 
-Estrutura do projeto
-
-api-devedores/
-├── prisma/
-│   ├── migrations/
-│   └── schema.prisma
-├── src/
-│   ├── controllers/
-│   │   ├── devedores.controller.js
-│   │   └── dividas.controller.js
-│   ├── router/
-│   │   ├── devedores.routes.js
-│   │   └── dividas.routes.js
-│   ├── utils/
-│   │   └── validarCpf.js
-│   ├── app.js
-│   ├── prisma.js
-│   └── server.js
-├── tests/
-├── prisma7.config.ts
-├── package.json
-└── .gitignore
-
-Organização
-
-controllers: regras de negócio e tratamento das requisições.
-
-router: definição dos endpoints da API.
-
-utils: funções auxiliares reutilizáveis.
-
-prisma: schema do banco e histórico de migrações.
-
-tests: testes automatizados.
-
-app.js: configuração da aplicação Express.
-
-server.js: inicialização do servidor.
-
-prisma.js: configuração do cliente Prisma e conexão com o banco.
-
 Funcionalidades
 
-Devedores
+Gerenciamento de devedores
 
-Cadastrar devedor.
+Cadastro de devedores.
 
-Listar devedores.
+Listagem de devedores com dívidas pendentes ou vencidas.
 
-Consultar devedor por ID.
+Consulta de devedor por ID.
 
-Atualizar cadastro completo.
+Atualização completa dos dados.
 
-Atualizar cadastro parcialmente.
+Atualização parcial dos dados.
 
-Excluir devedor.
+Exclusão de devedores.
 
-Validar CPF.
+Validação de CPF.
 
-Validar e-mail e telefone.
+Validação de e-mail e telefone.
 
-Impedir cadastro de CPF duplicado.
+Prevenção de CPF duplicado.
 
-Dívidas
+Gerenciamento de dívidas
 
-Cadastrar dívida.
+Cadastro de dívidas vinculadas aos devedores.
 
-Listar dívidas.
+Consulta e listagem de dívidas.
 
-Consultar dívida por ID.
+Consulta das dívidas de um devedor específico.
 
-Gerar relatório de dívidas.
+Controle de vencimentos.
 
-Atualizar status da dívida.
+Atualização do status da dívida.
 
-Endpoints
+Identificação de dívidas vencidas.
 
-A API utiliza o endereço base:
+Geração de relatório financeiro.
+
+Histórico de dívidas pagas.
+
+Interface web
+
+Painel administrativo com indicadores.
+
+Cadastro e edição de devedores.
+
+Pesquisa por nome ou CPF.
+
+Cadastro de dívida durante o registro do devedor.
+
+Consulta das dívidas de cada devedor.
+
+Atualização do status de pagamento.
+
+Histórico de pagamentos.
+
+Indicadores de dívidas pendentes, pagas e vencidas.
+
+Endpoints da API
+
+Endereço base:
 
 http://localhost:3000
 
@@ -157,7 +156,7 @@ GET
 
 /api/devedores/:id
 
-Consulta por ID
+Consulta um devedor por ID
 
 POST
 
@@ -183,6 +182,12 @@ DELETE
 
 Exclui um devedor
 
+GET
+
+/api/devedores/:id/dividas
+
+Consulta as dívidas de um devedor
+
 Dívidas
 
 Método
@@ -205,108 +210,33 @@ Lista as dívidas
 
 GET
 
-/api/dividas/relatorio
+/api/dividas/:id
 
-Gera relatório
+Consulta uma dívida por ID
 
 GET
 
-/api/dividas/:id
+/api/dividas/relatorio
 
-Consulta dívida por ID
+Gera relatório de dívidas
+
+GET
+
+/api/dividas/historico
+
+Consulta o histórico de dívidas pagas
 
 PATCH
 
 /api/dividas/:id/status
 
-Atualiza o status
-
-Como executar o projeto
-
-1. Pré-requisitos
-
-Antes de começar, instale:
-
-Node.js
-
-MySQL
-
-Git
-
-2. Clonar o repositório
-
-git clone https://github.com/elimjogos-pixel/Api-devedores.git
-
-Entre na pasta:
-
-cd Api-devedores
-
-3. Instalar dependências
-
-npm install
-
-4. Configurar as variáveis de ambiente
-
-Crie um arquivo .env na raiz do projeto.
-
-Exemplo:
-
-DB_PASSWORD=sua_senha_do_mysql
-DATABASE_URL="mysql://root:sua_senha_do_mysql@localhost:3306/api_devedores"
-
-Substitua os valores de exemplo pelas credenciais do seu ambiente. Se a senha tiver caracteres especiais, utilize a codificação apropriada para URL no DATABASE_URL.
-
-Importante: nunca envie o arquivo .env para o GitHub.
-
-5. Preparar o banco de dados
-
-Crie no MySQL um banco chamado:
-
-CREATE DATABASE api_devedores;
-
-Depois, execute as migrações do Prisma:
-
-npx prisma migrate dev
-
-Gere o cliente Prisma:
-
-npx prisma generate
-
-6. Iniciar a aplicação
-
-Modo de desenvolvimento:
-
-npm run dev
-
-Modo normal:
-
-npm start
-
-O servidor estará disponível em:
-
-http://localhost:3000
-
-A rota inicial pode ser acessada em:
-
-http://localhost:3000/
-
-Testes automatizados
-
-O projeto utiliza Jest e Supertest para verificar o comportamento da aplicação e suas funcionalidades.
-
-Execute:
-
-npm test
-
-Último resultado registrado durante o desenvolvimento:
-
-Test Suites: 4 passed, 4 total
-Tests:       106 passed, 106 total
-Snapshots:   0 total
+Atualiza o status da dívida
 
 Banco de dados
 
-O projeto possui duas entidades principais:
+O projeto utiliza MySQL e Prisma ORM.
+
+Possui duas entidades principais:
 
 Devedor
 
@@ -338,22 +268,135 @@ Status
 
 Data de criação
 
-Um devedor pode possuir várias dívidas. Cada dívida está relacionada a um devedor.
+Um devedor pode possuir várias dívidas. Cada dívida está relacionada a um único devedor, estabelecendo um relacionamento de um para muitos (1:N).
+
+Como executar o projeto
+
+Pré-requisitos
+
+Instale previamente:
+
+Node.js
+
+MySQL
+
+Git
+
+1. Clonar o repositório
+
+git clone https://github.com/elimjogos-pixel/Api-devedores.git
+
+Entre na pasta:
+
+cd Api-devedores
+
+2. Instalar as dependências
+
+npm install
+
+3. Configurar as variáveis de ambiente
+
+Crie um arquivo .env na raiz do backend.
+
+Exemplo:
+
+DATABASE_URL="mysql://root:sua_senha@localhost:3306/api_devedores"
+
+Substitua os dados de exemplo pelas credenciais do seu ambiente.
+
+Nunca compartilhe o arquivo .env ou envie credenciais para o GitHub.
+
+4. Preparar o banco de dados
+
+Crie o banco no MySQL:
+
+CREATE DATABASE api_devedores;
+
+Execute as migrações:
+
+npx prisma migrate dev
+
+Gere o cliente Prisma:
+
+npx prisma generate
+
+5. Iniciar o backend
+
+Modo de desenvolvimento:
+
+npm run dev
+
+Modo normal:
+
+npm start
+
+O servidor estará disponível em:
+
+http://localhost:3000
+
+6. Executar os testes
+
+npm test
+
+Último resultado registrado durante o desenvolvimento:
+
+Test Suites: 4 passed, 4 total
+Tests:       106 passed, 106 total
+Snapshots:   0 total
+
+Testes automatizados
+
+O projeto utiliza Jest e Supertest para verificar o comportamento da aplicação e suas rotas HTTP.
+
+Os testes auxiliam na identificação de erros e na validação das funcionalidades implementadas.
+
+O frontend foi desenvolvido utilizando React, Vite e Bootstrap.
+
+Entre na pasta do frontend:
+
+cd frontend
+
+Instale as dependências:
+
+npm install
+
+Inicie o servidor de desenvolvimento:
+
+npm run dev
+
+O Vite exibirá no terminal o endereço local para acessar a aplicação, normalmente:
+
+http://localhost:5173
+
+Outros comandos do frontend
+
+Gerar a versão de produção:
+
+npm run build
+
+Verificar o código com Oxlint:
+
+npm run lint
+
+Visualizar a versão de produção:
+
+npm run preview
+
+Importante: mantenha o backend e o frontend executando em terminais separados para que a interface consiga se comunicar com a API.
 
 Próximas evoluções
-
-Desenvolvimento de uma interface frontend.
-
-Integração completa entre frontend e API.
 
 Documentação interativa com Swagger/OpenAPI.
 
 Evolução gradual para TypeScript.
 
-Melhorias contínuas na cobertura e qualidade dos testes.
+Melhorias contínuas na cobertura dos testes.
+
+Aprimoramento da interface e da experiência do usuário.
 
 Autor
 
-Projeto desenvolvido como parte de uma jornada prática de aprendizado em desenvolvimento backend, com foco em construção de APIs REST, banco de dados, testes automatizados e preparação para o mercado de tecnologia.
+Projeto desenvolvido como parte de uma jornada prática de aprendizado em desenvolvimento de software, com foco em backend, frontend, APIs REST, banco de dados, testes automatizados e preparação para o mercado de tecnologia.
 
-Repositório: https://github.com/elimjogos-pixel/Api-devedores
+Repositório:
+https://github.com/elimjogos-pixel/Api-devedores

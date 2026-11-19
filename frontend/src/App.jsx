@@ -30,6 +30,8 @@ function App() {
 
   const [historico, setHistorico] = useState([])
 
+  const [busca, setbusca] = useState('')
+
   function handleChange(event) {
     const { name, value } = event.target
 
@@ -269,6 +271,15 @@ function App() {
   },
     [])
 
+  const devedoresFiltrados = devedores.filter((devedor) => {
+    const termo = busca.toLocaleLowerCase().trim()
+
+    return (
+      devedor.nome.toLowerCase().includes(termo) || 
+      devedor.cpf.includes(termo)
+    )
+  })
+
   return (
     <div className="container-fluid">
       {/*Menu superior */}
@@ -289,13 +300,13 @@ function App() {
       </nav>
 
       {/*Conteudo principal */}
-      <main className="container mt-4">
+      <main className="container-fluid px-4 py-4">
         {tela === 'principal' && (
           <>
 
             <div className="d-flex justify-content-between align-items-center mb-4">
               <div>
-                <h2>Painel Administrativo</h2>
+                <h2 className="text-dark fw-bold">Painel Administrativo</h2>
                 <p className="text-muted">
                   Gerenciamento de devedores e dívidas
                 </p>
@@ -455,44 +466,44 @@ function App() {
             <div className="row mb-4">
 
               <div className="col-md-4 mb-3">
-                <div className="card shadow-sm">
+                <div className="card shadow-sm border-0 border-start border-4 border-primary h-100">
                   <div className="card-body">
-                    <h6 className="text-muted">Total de Dividas</h6>
-                    <h3>{relatorio ? relatorio.totalDividas : 0}</h3>
+                    <h6 className="text-primary">Total de Dividas</h6>
+                    <h3 className="fw-bold mb-0 text-primary">{relatorio ? relatorio.totalDividas : 0}</h3>
                   </div>
                 </div>
               </div>
 
               <div className="col-md-4 mb-3">
-                <div className="card shadow-sm">
+                <div className="card shadow-sm border-0 border-start border-4 border-warning h-100">
                   <div className="card-body">
-                    <h6 className="text-muted">Dívidas Pendentes</h6>
-                    <h3>{relatorio ? relatorio.quantidadePendente : 0}</h3>
+                    <h6 className="text-warning">Dívidas Pendentes</h6>
+                    <h3 className="fw-bold mb-0 text-warning">{relatorio ? relatorio.quantidadePendente : 0}</h3>
                   </div>
                 </div>
               </div>
               <div className="col-md-4 mb-3">
-                <div className="card shadow-sm">
+                <div className="card shadow-sm border-0 border-start border-4 border-success h-100">
                   <div className="card-body">
-                    <h6 className="text-muted">Dividas Pagas</h6>
-                    <h3>{relatorio ? relatorio.quantidadePaga : 0}</h3>
+                    <h6 className="text-success">Dividas Pagas</h6>
+                    <h3 className="fw-bold mb-0 text-success">{relatorio ? relatorio.quantidadePaga : 0}</h3>
                   </div>
                 </div>
               </div>
               <div className="col-md-4 mb-3">
-                <div className="card shadow-sm">
+                <div className="card shadow-sm border-0 border-start border-4 border-danger h-100">
                   <div className="card-body">
-                    <h6 className="text-muted">Dividas Vencidas</h6>
-                    <h3>{relatorio ? relatorio.quantidadeVencida : 0}</h3>
+                    <h6 className="text-danger">Dividas Vencidas</h6>
+                    <h3 className="fw-bold mb-0 text-danger">{relatorio ? relatorio.quantidadeVencida : 0}</h3>
                   </div>
                 </div>
               </div>
 
               <div className="col-md-4 mb-3">
-                <div className="card shadow-sm">
+                <div className="card shadow-sm border-0 h-100">
                   <div className="card-body">
                     <h6 className="text-muted">Valor Total das Dívidas</h6>
-                    <h3>{Number(relatorio?.valorTotal ?? 0).toLocaleString('pt-BR', {
+                    <h3 className="fw-bold mb-0">{Number(relatorio?.valorTotal ?? 0).toLocaleString('pt-BR', {
                       style: 'currency',
                       currency: 'BRL'
                     })}</h3>
@@ -509,8 +520,17 @@ function App() {
               </div>
 
               <div className="card-body">
+                <div className="mb-3">
+                  <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Pesquisar por nome ou CPF"
+                      value={busca}
+                      onChange={(event) => setbusca(event.target.value)}
+                      />
+                </div>
                 <div className="table-responsive">
-                  <table className="table table-striped table-hover">
+                  <table className="table table-striped table-hover align-middle">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -524,7 +544,7 @@ function App() {
 
 
                     <tbody>
-                      {devedores.length === 0 ? (
+                      {devedoresFiltrados.length === 0 ? (
                         <tr>
                           <td
                             colSpan='6' className="text-center text-muted">
@@ -532,14 +552,14 @@ function App() {
                           </td>
                         </tr>
                       ) : (
-                        devedores.map((devedor) => (
+                        devedoresFiltrados.map((devedor) => (
                           <tr key={devedor.id}>
                             <td>{devedor.id}</td>
                             <td>{devedor.nome}</td>
                             <td>{devedor.cpf}</td>
                             <td>{devedor.email}</td>
                             <td>
-                              <button className="btn btn-sm btn-primary"
+                              <button className="btn btn-sm btn-primary me-2"
                                 onClick={() => handleEdit(devedor)}>Editar</button>
                               <button
                                 className="btn btn-sm btn-danger"
@@ -697,24 +717,25 @@ function App() {
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <div>
-                <h2>Histórico de Pagamentos</h2>
+                <h2 className="text-dark fw-bold">Histórico de Pagamentos</h2>
                 <p className="text-muted">
                   Consulta de todas as dívidas quitadas
                 </p>
               </div>
 
               <button
-                className="btn btn-secondary"
+                className="btn btn-outline-primary"
                 onClick={() => setTela('principal')}
               >
-                Voltar
+                Voltar ao painel
               </button>
             </div>
 
             <div className="card shadow-sm">
               <div className="card-body">
+                
                 <div className="table-responsive">
-                  <table className="table table-hover align-middle">
+                  <table className="table table-striped table-hover align-middle">
                     <thead>
                       <tr>
                         <th>Devedor</th>
